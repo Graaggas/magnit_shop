@@ -16,8 +16,7 @@ class AppRouterDelegate extends RouterDelegate<Coordinate>
   final GlobalKey<NavigatorState> navigatorKey;
 
   /// Create an instance [AppRouterDelegate].
-  AppRouterDelegate(this.coordinator)
-      : navigatorKey = GlobalKey<NavigatorState>() {
+  AppRouterDelegate(this.coordinator) : navigatorKey = GlobalKey<NavigatorState>() {
     coordinator.addListener(notifyListeners);
   }
 
@@ -49,6 +48,5 @@ class AppRouterDelegate extends RouterDelegate<Coordinate>
   /// Called by the Router when the Router.routeInformationProvider
   /// reports that a new route has been pushed to the application by the operating system.
   @override
-  Future<void> setNewRoutePath(Coordinate configuration) async =>
-      SynchronousFuture(null);
+  Future<void> setNewRoutePath(Coordinate configuration) async => SynchronousFuture(null);
 }
