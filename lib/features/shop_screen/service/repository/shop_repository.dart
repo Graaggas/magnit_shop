@@ -21,7 +21,8 @@ class ShopRepository implements IShopRepository {
       final productsBox = await Hive.openBox<Product>('products');
       final parametersBox = await Hive.openBox('parameters');
 
-      await productsBox.add(Product(id: 0, productName: 'Cattle', parameterList: [
+      await productsBox
+          .add(Product(id: 0, productName: 'Cattle', parameterList: [
         parametersBox.get(0),
         parametersBox.get(1),
       ]));
@@ -29,7 +30,8 @@ class ShopRepository implements IShopRepository {
         parametersBox.get(3),
         parametersBox.get(2),
       ]));
-      await productsBox.add(Product(id: 2, productName: 'Plate', parameterList: [
+      await productsBox
+          .add(Product(id: 2, productName: 'Plate', parameterList: [
         parametersBox.get(0),
         parametersBox.get(3),
       ]));
@@ -41,14 +43,14 @@ class ShopRepository implements IShopRepository {
       final productsBox = await Hive.openBox<Product>('products');
 
       await shopsBox.addAll([
-        Shop(id: 0, shopName: 'Cup World', productList: [
+        Shop(id: 0, shopName: 'WORLD OF CUPS', productList: [
           productsBox.get(1),
         ]),
-        Shop(id: 1, shopName: 'Handy Items', productList: [
+        Shop(id: 1, shopName: 'HANDY STUFF', productList: [
           productsBox.get(1),
           productsBox.get(0),
         ]),
-        Shop(id: 2, shopName: 'Nothing to give', productList: [
+        Shop(id: 2, shopName: 'NOTHING TO GIVE, SO SORRY', productList: [
           productsBox.get(0),
           productsBox.get(2),
         ]),

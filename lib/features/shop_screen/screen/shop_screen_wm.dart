@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:magnit_shop/features/app/di/app_scope.dart';
+import 'package:magnit_shop/features/navigation/service/app_coordinate.dart';
+import 'package:magnit_shop/features/navigation/service/coordinator.dart';
 import 'package:magnit_shop/features/shop_screen/domain/entity/shop/shop.dart';
 import 'package:magnit_shop/features/shop_screen/screen/shop_screen.dart';
 import 'package:magnit_shop/features/shop_screen/screen/shop_screen_model.dart';
@@ -17,17 +19,28 @@ ShopScreenWM createShopScreenWM(BuildContext context) {
     shopBloc: appDependencies.shopBloc,
   );
 
-  return ShopScreenWM(model: model);
+  return ShopScreenWM(
+    model: model,
+    coordinator: appDependencies.coordinator,
+  );
 }
 
 /// Widget model for [ShopScreen].
-class ShopScreenWM extends WidgetModel<ShopScreen, ShopScreenModel> implements IShopScreenWM {
+class ShopScreenWM extends WidgetModel<ShopScreen, ShopScreenModel>
+    implements IShopScreenWM {
+  final Coordinator _coordinator;
   final _shopEntityState = EntityStateNotifier<List<Shop>>();
   late final StreamSubscription<BaseShopState> _stateStatusSubscription;
-  @override
-  ListenableState<EntityState<List<Shop>>> get shopEntityState => _shopEntityState;
 
-  ShopScreenWM({required ShopScreenModel model}) : super(model);
+  @override
+  ListenableState<EntityState<List<Shop>>> get shopEntityState =>
+      _shopEntityState;
+
+  ShopScreenWM({
+    required ShopScreenModel model,
+    required Coordinator coordinator,
+  })  : _coordinator = coordinator,
+        super(model);
 
   @override
   void initWidgetModel() {
@@ -45,6 +58,13 @@ class ShopScreenWM extends WidgetModel<ShopScreen, ShopScreenModel> implements I
     super.dispose();
   }
 
+  @override
+  void onShopCardTap(Shop shop) => _coordinator.navigate(
+        context,
+        AppCoordinates.aboutShopScreen,
+        arguments: shop,
+      );
+
   void _updateState(BaseShopState state) {
     if (state is InitShopState) {
       _shopEntityState.loading();
@@ -61,4 +81,7 @@ class ShopScreenWM extends WidgetModel<ShopScreen, ShopScreenModel> implements I
 abstract class IShopScreenWM {
   /// State.
   ListenableState<EntityState<List<Shop>>> get shopEntityState;
+
+  /// On shop card tap.
+  void onShopCardTap(Shop shop);
 }
