@@ -21,14 +21,33 @@ class ShopScreen extends ElementaryWidget<ShopScreenWM> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: _toolbarHeight,
+        actions: [
+          SizedBox(
+            height: 16,
+            child: TextButton(
+              onPressed: () {},
+              child: IconButton(
+                  splashRadius: 32,
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.filter_alt,
+                    color: Colors.black45,
+                  )),
+            ),
+          ),
+        ],
         title: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
-          children: const [
-            SizedBox(height: 8),
-            FilterTextField(hintText: ShopScreenString.filterByProduct),
-            SizedBox(height: 8),
-            FilterTextField(hintText: ShopScreenString.filterByParameter),
-            SizedBox(height: 8),
+          children: [
+            const SizedBox(height: 8),
+            FilterTextField(
+              hintText: ShopScreenString.filterByProduct,
+              controller: wm.productFilteringController,
+            ),
+            const SizedBox(height: 8),
+            const FilterTextField(hintText: ShopScreenString.filterByParameter),
+            const SizedBox(height: 8),
           ],
         ),
       ),

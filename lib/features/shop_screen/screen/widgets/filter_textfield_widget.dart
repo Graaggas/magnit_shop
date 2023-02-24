@@ -4,8 +4,11 @@ const _fieldHeight = 40.0;
 
 class FilterTextField extends StatelessWidget {
   final String hintText;
+  final TextEditingController? controller;
+
   const FilterTextField({
     required this.hintText,
+    this.controller,
     super.key,
   });
 
@@ -14,6 +17,7 @@ class FilterTextField extends StatelessWidget {
     return SizedBox(
       height: _fieldHeight,
       child: TextField(
+        controller: controller,
         decoration: InputDecoration(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(37.0),

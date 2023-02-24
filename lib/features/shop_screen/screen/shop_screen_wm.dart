@@ -26,13 +26,22 @@ ShopScreenWM createShopScreenWM(BuildContext context) {
 }
 
 /// Widget model for [ShopScreen].
-class ShopScreenWM extends WidgetModel<ShopScreen, ShopScreenModel> implements IShopScreenWM {
+class ShopScreenWM extends WidgetModel<ShopScreen, ShopScreenModel>
+    implements IShopScreenWM {
   final Coordinator _coordinator;
   final _shopEntityState = EntityStateNotifier<List<Shop>>();
   late final StreamSubscription<BaseShopState> _stateStatusSubscription;
 
+  final TextEditingController _productFilteringController =
+      TextEditingController();
+
   @override
-  ListenableState<EntityState<List<Shop>>> get shopEntityState => _shopEntityState;
+  ListenableState<EntityState<List<Shop>>> get shopEntityState =>
+      _shopEntityState;
+
+  @override
+  TextEditingController get productFilteringController =>
+      _productFilteringController;
 
   ShopScreenWM({
     required ShopScreenModel model,
@@ -52,6 +61,7 @@ class ShopScreenWM extends WidgetModel<ShopScreen, ShopScreenModel> implements I
   void dispose() {
     _shopEntityState.dispose();
     _stateStatusSubscription.cancel();
+    _productFilteringController.dispose();
 
     super.dispose();
   }
@@ -79,6 +89,9 @@ class ShopScreenWM extends WidgetModel<ShopScreen, ShopScreenModel> implements I
 abstract class IShopScreenWM {
   /// State.
   ListenableState<EntityState<List<Shop>>> get shopEntityState;
+
+  /// Filter by product controller.
+  TextEditingController get productFilteringController;
 
   /// On shop card tap.
   void onShopCardTap(Shop shop);
