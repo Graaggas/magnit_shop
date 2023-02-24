@@ -36,8 +36,7 @@ class ShopCard extends StatelessWidget {
                         shrinkWrap: true,
                         itemCount: shops[index].productList.length,
                         itemBuilder: (_, indexProduct) => Text(
-                          shops[index].productList[indexProduct]?.productName ??
-                              '',
+                          shops[index].productList[indexProduct]?.productName ?? '',
                         ),
                       ),
                     ),

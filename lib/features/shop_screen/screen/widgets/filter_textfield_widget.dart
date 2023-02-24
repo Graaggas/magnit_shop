@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+const _fieldHeight = 40.0;
+
 class FilterTextField extends StatelessWidget {
   final String hintText;
   const FilterTextField({
@@ -10,7 +12,7 @@ class FilterTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 40,
+      height: _fieldHeight,
       child: TextField(
         decoration: InputDecoration(
           border: OutlineInputBorder(

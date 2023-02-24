@@ -4,6 +4,10 @@ import 'package:magnit_shop/features/shop_screen/domain/entity/shop/shop.dart';
 import 'package:magnit_shop/features/shop_screen/screen/shop_screen_wm.dart';
 import 'package:magnit_shop/features/shop_screen/screen/widgets/filter_textfield_widget.dart';
 import 'package:magnit_shop/features/shop_screen/screen/widgets/show_card_widget.dart';
+import 'package:magnit_shop/features/shop_screen/shop_screen_string.dart';
+
+// Toolbar height = 40 (height of one textfield) * 2 + 8 (sizedBox) * 3 = 104
+const _toolbarHeight = 104.0;
 
 /// Screen for shops.
 class ShopScreen extends ElementaryWidget<ShopScreenWM> {
@@ -16,18 +20,14 @@ class ShopScreen extends ElementaryWidget<ShopScreenWM> {
   Widget build(IShopScreenWM wm) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 104,
+        toolbarHeight: _toolbarHeight,
         title: Column(
           mainAxisSize: MainAxisSize.min,
           children: const [
             SizedBox(height: 8),
-            FilterTextField(
-              hintText: 'Фильтрация по товару',
-            ),
+            FilterTextField(hintText: ShopScreenString.filterByProduct),
             SizedBox(height: 8),
-            FilterTextField(
-              hintText: 'Фильтрация по характеристике',
-            ),
+            FilterTextField(hintText: ShopScreenString.filterByParameter),
             SizedBox(height: 8),
           ],
         ),
@@ -36,12 +36,12 @@ class ShopScreen extends ElementaryWidget<ShopScreenWM> {
         listenableEntityState: wm.shopEntityState,
         loadingBuilder: (_, __) => const CircularProgressIndicator(),
         errorBuilder: (_, __, ___) => const Center(
-          child: Text('Error loading'),
+          child: Text(ShopScreenString.errorLoadingTitle),
         ),
         builder: (_, shops) {
           if (shops == null) {
             return const Center(
-              child: Text('data is null'),
+              child: Text(ShopScreenString.emptyDatabaseTitle),
             );
           }
 

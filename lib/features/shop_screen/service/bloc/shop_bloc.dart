@@ -17,7 +17,7 @@ class ShopBloc extends Bloc<BaseShopEvent, BaseShopState> {
   ) async {
     emit(LoadingShopState());
     try {
-      final shopList = await _shopRepository.initData();
+      final shopList = await _shopRepository.fetchShops();
       emit(ShopState(shopList.toList()));
     } on Exception catch (_) {
       emit(LoadingErrorState());

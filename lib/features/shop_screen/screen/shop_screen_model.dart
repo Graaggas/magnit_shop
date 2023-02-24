@@ -25,6 +25,7 @@ class ShopScreenModel extends ElementaryModel {
   @override
   Future<void> init() async {
     super.init();
+    await _shopRepository.initData();
 
     _shopBloc.add(ShopLoadEvent());
   }

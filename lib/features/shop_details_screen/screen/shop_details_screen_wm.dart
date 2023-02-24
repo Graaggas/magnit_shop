@@ -10,12 +10,10 @@ ShopDetailsScreenWM createShopDetailsScreenWM(Shop shop) => ShopDetailsScreenWM(
     );
 
 /// Widget model for [ShopDetailsScreen].
-class ShopDetailsScreenWM
-    extends WidgetModel<ShopDetailsScreen, ShopDetailsScreenModel>
+class ShopDetailsScreenWM extends WidgetModel<ShopDetailsScreen, ShopDetailsScreenModel>
     implements IShopDetailsScreenWM {
   final Shop _shop;
-  ShopDetailsScreenWM(
-      {required ShopDetailsScreenModel model, required Shop shop})
+  ShopDetailsScreenWM({required ShopDetailsScreenModel model, required Shop shop})
       : _shop = shop,
         super(model);
 }

@@ -26,15 +26,13 @@ ShopScreenWM createShopScreenWM(BuildContext context) {
 }
 
 /// Widget model for [ShopScreen].
-class ShopScreenWM extends WidgetModel<ShopScreen, ShopScreenModel>
-    implements IShopScreenWM {
+class ShopScreenWM extends WidgetModel<ShopScreen, ShopScreenModel> implements IShopScreenWM {
   final Coordinator _coordinator;
   final _shopEntityState = EntityStateNotifier<List<Shop>>();
   late final StreamSubscription<BaseShopState> _stateStatusSubscription;
 
   @override
-  ListenableState<EntityState<List<Shop>>> get shopEntityState =>
-      _shopEntityState;
+  ListenableState<EntityState<List<Shop>>> get shopEntityState => _shopEntityState;
 
   ShopScreenWM({
     required ShopScreenModel model,
