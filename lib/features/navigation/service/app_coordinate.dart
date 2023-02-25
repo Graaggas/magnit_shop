@@ -1,6 +1,9 @@
-import 'package:magnit_shop/features/shop_details_screen/screen/shop_details_screen.dart';
-import 'package:magnit_shop/features/shop_details_screen/screen/shop_details_screen_wm.dart';
+import 'package:magnit_shop/features/product_details/screen/product_details_screen.dart';
+import 'package:magnit_shop/features/product_details/screen/product_details_screen_wm.dart';
+import 'package:magnit_shop/features/shop_details/screen/shop_details_screen.dart';
+import 'package:magnit_shop/features/shop_details/screen/shop_details_screen_wm.dart';
 import 'package:magnit_shop/features/navigation/domain/entity/coordinate.dart';
+import 'package:magnit_shop/features/shop_screen/domain/entity/product/product.dart';
 import 'package:magnit_shop/features/shop_screen/domain/entity/shop/shop.dart';
 import 'package:magnit_shop/features/shop_screen/screen/shop_screen.dart';
 
@@ -9,7 +12,8 @@ class AppCoordinates implements Coordinate {
   /// Initialization screens([InitScreen]).
   static const initScreen = AppCoordinates._('shops_list');
 
-  static const aboutShopScreen = AppCoordinates._('about_shop');
+  static const shopDetailsScreen = AppCoordinates._('shop_details');
+  static const productDetailsScreen = AppCoordinates._('product_details');
 
   final String _value;
 
@@ -22,9 +26,14 @@ class AppCoordinates implements Coordinate {
 /// List of main routes of the app.
 final Map<AppCoordinates, CoordinateBuilder> appCoordinates = {
   AppCoordinates.initScreen: (_, __) => const ShopScreen(),
-  AppCoordinates.aboutShopScreen: (_, args) {
+  AppCoordinates.shopDetailsScreen: (_, args) {
     return ShopDetailsScreen(
       wmFactory: (_) => createShopDetailsScreenWM(args as Shop),
+    );
+  },
+  AppCoordinates.productDetailsScreen: (_, args) {
+    return ProductDetailsScreen(
+      wmFactory: (_) => createProductDetailsScreenWM(args as Product),
     );
   },
 };

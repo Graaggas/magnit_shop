@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:elementary/elementary.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:magnit_shop/features/app/di/app_scope.dart';
 import 'package:magnit_shop/features/navigation/service/app_coordinate.dart';
 import 'package:magnit_shop/features/navigation/service/coordinator.dart';
+import 'package:magnit_shop/features/shop_screen/domain/entity/product/product.dart';
 import 'package:magnit_shop/features/shop_screen/domain/entity/shop/shop.dart';
 import 'package:magnit_shop/features/shop_screen/screen/shop_screen.dart';
 import 'package:magnit_shop/features/shop_screen/screen/shop_screen_model.dart';
@@ -31,10 +33,20 @@ class ShopScreenWM extends WidgetModel<ShopScreen, ShopScreenModel> implements I
   final _shopEntityState = EntityStateNotifier<List<Shop>>();
   late final StreamSubscription<BaseShopState> _stateStatusSubscription;
 
-  final TextEditingController _productFilteringController = TextEditingController();
+  final _isFilterUsed = ValueNotifier(false);
+
+  final _productFilteringController = TextEditingController();
+
+  final _productFilterFocusNode = FocusNode();
+
+  @override
+  FocusNode get productFilterFocusNode => _productFilterFocusNode;
 
   @override
   ListenableState<EntityState<List<Shop>>> get shopEntityState => _shopEntityState;
+
+  @override
+  ValueListenable<bool> get isFilterUsedState => _isFilterUsed;
 
   @override
   TextEditingController get productFilteringController => _productFilteringController;
@@ -58,6 +70,7 @@ class ShopScreenWM extends WidgetModel<ShopScreen, ShopScreenModel> implements I
     _shopEntityState.dispose();
     _stateStatusSubscription.cancel();
     _productFilteringController.dispose();
+    _productFilterFocusNode.dispose();
 
     super.dispose();
   }
@@ -66,17 +79,37 @@ class ShopScreenWM extends WidgetModel<ShopScreen, ShopScreenModel> implements I
   void onFilterTap() {
     final filterText = _productFilteringController.text;
 
-    if (_productFilteringController.text.isEmpty) model.filterByProduct();
+    if (_productFilteringController.text.isEmpty) {
+      _isFilterUsed.value = false;
+      model.filterByProduct();
+      _productFilterFocusNode.unfocus();
+
+      return;
+    }
 
     model.filterByProduct(productFilter: filterText);
+    _isFilterUsed.value = true;
+
+    _productFilterFocusNode.unfocus();
   }
 
   @override
-  void onShopCardTap(Shop shop) => _coordinator.navigate(
-        context,
-        AppCoordinates.aboutShopScreen,
-        arguments: shop,
-      );
+  void onShopCardTap(Shop shop) {
+    _coordinator.navigate(
+      context,
+      AppCoordinates.shopDetailsScreen,
+      arguments: shop,
+    );
+  }
+
+  @override
+  void onProductTap(Product product) {
+    _coordinator.navigate(
+      context,
+      AppCoordinates.productDetailsScreen,
+      arguments: product,
+    );
+  }
 
   void _updateState(BaseShopState state) {
     if (state is InitShopState) {
@@ -100,8 +133,17 @@ abstract class IShopScreenWM {
   /// Filter by product controller.
   TextEditingController get productFilteringController;
 
+  /// Filter by product focus node.
+  FocusNode get productFilterFocusNode;
+
+  /// Filter using state.
+  ValueListenable<bool> get isFilterUsedState;
+
   /// On shop card tap.
   void onShopCardTap(Shop shop);
+
+  /// On product tab.
+  void onProductTap(Product product);
 
   /// On filter icon button tap.
   void onFilterTap();

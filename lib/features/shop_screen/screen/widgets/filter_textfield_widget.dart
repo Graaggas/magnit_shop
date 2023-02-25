@@ -5,10 +5,12 @@ const _fieldHeight = 40.0;
 class FilterTextField extends StatelessWidget {
   final String hintText;
   final TextEditingController? controller;
+  final FocusNode? focusNode;
 
   const FilterTextField({
     required this.hintText,
     this.controller,
+    this.focusNode,
     super.key,
   });
 
@@ -18,6 +20,7 @@ class FilterTextField extends StatelessWidget {
       height: _fieldHeight,
       child: TextField(
         controller: controller,
+        focusNode: focusNode,
         decoration: InputDecoration(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(37.0),

@@ -44,6 +44,7 @@ class ShopScreen extends ElementaryWidget<ShopScreenWM> {
             FilterTextField(
               hintText: ShopScreenString.filterByProduct,
               controller: wm.productFilteringController,
+              focusNode: wm.productFilterFocusNode,
             ),
             const SizedBox(height: 8),
             const FilterTextField(hintText: ShopScreenString.filterByParameter),
@@ -72,6 +73,8 @@ class ShopScreen extends ElementaryWidget<ShopScreenWM> {
                   child: ShopCard(
                     shops: shops,
                     onShopTap: wm.onShopCardTap,
+                    onProductTap: wm.onProductTap,
+                    ifFilterUsedState: wm.isFilterUsedState,
                   ),
                 ),
               ),

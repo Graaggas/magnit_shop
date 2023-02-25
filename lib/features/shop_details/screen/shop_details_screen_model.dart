@@ -1,4 +1,4 @@
 import 'package:elementary/elementary.dart';
 
-/// Model for [AboutShopScreen].
+/// Model for [ShopDetailsScreen].
 class ShopDetailsScreenModel extends ElementaryModel {}

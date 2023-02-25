@@ -48,23 +48,41 @@ class ShopRepository implements IShopRepository {
       final shopsBox = await Hive.openBox<Shop>(ShopRepositoryKeys.shopsKey);
 
       await shopsBox.addAll([
-        Shop(id: 0, shopName: 'WORLD OF CUPS', productList: [
-          productsBox.get(1),
-        ]),
-        Shop(id: 1, shopName: 'HANDY STUFF', productList: [
-          productsBox.get(1),
-          productsBox.get(0),
-          productsBox.get(3),
-        ]),
-        Shop(id: 2, shopName: 'NOTHING TO GIVE, SO SORRY', productList: [
-          productsBox.get(0),
-          productsBox.get(2),
-        ]),
-        Shop(id: 3, shopName: 'NEED THINGS', productList: [
-          productsBox.get(1),
-          productsBox.get(5),
-          productsBox.get(3),
-        ]),
+        Shop(
+          id: 0,
+          shopName: 'WORLD OF CUPS',
+          productList: [
+            productsBox.get(1),
+          ],
+          shopDescription: 'Cuphead is our best friend!',
+        ),
+        Shop(
+            id: 1,
+            shopName: 'HANDY STUFF',
+            productList: [
+              productsBox.get(1),
+              productsBox.get(0),
+              productsBox.get(3),
+            ],
+            shopDescription: 'Need something useless? Welcome!'),
+        Shop(
+            id: 2,
+            shopName: 'NOTHING TO GIVE, SO SORRY',
+            productList: [
+              productsBox.get(0),
+              productsBox.get(2),
+            ],
+            shopDescription: 'The most truthful market... Stop me crying...'),
+        Shop(
+          id: 3,
+          shopName: 'NEEDFUL THINGS',
+          productList: [
+            productsBox.get(1),
+            productsBox.get(5),
+            productsBox.get(3),
+          ],
+          shopDescription: 'No no! We dunno any Stephen King at all!',
+        ),
       ]);
 
       shopsBox.close();

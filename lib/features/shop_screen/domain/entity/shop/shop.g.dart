@@ -20,19 +20,22 @@ class ShopAdapter extends TypeAdapter<Shop> {
       id: fields[0] as int,
       shopName: fields[1] as String,
       productList: (fields[2] as List).cast<Product?>(),
+      shopDescription: fields[3] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Shop obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.shopName)
       ..writeByte(2)
-      ..write(obj.productList);
+      ..write(obj.productList)
+      ..writeByte(3)
+      ..write(obj.shopDescription);
   }
 
   @override

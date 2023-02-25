@@ -18,9 +18,14 @@ class Shop extends HiveObject {
   @HiveField(2)
   late List<Product?> productList;
 
+  /// Shop description.
+  @HiveField(3)
+  late String shopDescription;
+
   Shop({
     required this.id,
     required this.shopName,
     required this.productList,
+    required this.shopDescription,
   });
 }
