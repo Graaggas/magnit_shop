@@ -1,45 +1,45 @@
+import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:magnit_shop/features/shop_screen/domain/entity/parameter/parameter.dart';
 import 'package:magnit_shop/features/shop_screen/domain/entity/product/product.dart';
 import 'package:magnit_shop/features/shop_screen/domain/entity/shop/shop.dart';
+import 'package:magnit_shop/features/shop_screen/service/repository/i_shop_repository.dart';
 import 'package:magnit_shop/features/shop_screen/service/repository/shop_repository_keys.dart';
 
 /// Shop repository.
 class ShopRepository implements IShopRepository {
   @override
   Future<void> initData() async {
-    final isParametersBoxExist = await Hive.boxExists(ShopRepositoryKeys.parametersKey);
-    if (!isParametersBoxExist) {
-      final parametersBox = await Hive.openBox<Parameter>(ShopRepositoryKeys.parametersKey);
+    final isShopBoxExist = await Hive.boxExists(ShopRepositoryKeys.shopsKey);
+    if (!isShopBoxExist) {
+      // Fill Parameters
+      final parametersBox = await Hive.openBox(ShopRepositoryKeys.parametersKey);
+
       await parametersBox.add(Parameter(id: 0, name: 'weight'));
       await parametersBox.add(Parameter(id: 1, name: 'height'));
       await parametersBox.add(Parameter(id: 2, name: 'width'));
       await parametersBox.add(Parameter(id: 3, name: 'length'));
-    }
 
-    final isProductsBoxExist = await Hive.boxExists(ShopRepositoryKeys.productsKey);
-    if (!isProductsBoxExist) {
+      // Fill Products
       final productsBox = await Hive.openBox<Product>(ShopRepositoryKeys.productsKey);
-      final parametersBox = await Hive.openBox(ShopRepositoryKeys.productsKey);
 
       await productsBox.add(Product(id: 0, productName: 'Cattle', parameterList: [
         parametersBox.get(0),
         parametersBox.get(1),
       ]));
+
       await productsBox.add(Product(id: 1, productName: 'Mug', parameterList: [
         parametersBox.get(3),
         parametersBox.get(2),
       ]));
+
       await productsBox.add(Product(id: 2, productName: 'Plate', parameterList: [
         parametersBox.get(0),
         parametersBox.get(3),
       ]));
-    }
 
-    final isShopsBoxExist = await Hive.boxExists(ShopRepositoryKeys.shopsKey);
-    if (!isShopsBoxExist) {
+      // Fill Shops
       final shopsBox = await Hive.openBox<Shop>(ShopRepositoryKeys.shopsKey);
-      final productsBox = await Hive.openBox<Product>(ShopRepositoryKeys.productsKey);
 
       await shopsBox.addAll([
         Shop(id: 0, shopName: 'WORLD OF CUPS', productList: [
@@ -54,24 +54,33 @@ class ShopRepository implements IShopRepository {
           productsBox.get(2),
         ]),
       ]);
+
+      shopsBox.close();
+      productsBox.close();
+      parametersBox.close();
     }
-    // final shopsBox = await Hive.openBox<Shop>('shops');
-    // return shopsBox.values;
   }
 
   @override
-  Future<Iterable<Shop>> fetchShops() async {
+  Future<List<Shop>> fetchShops(String? productFilter) async {
     final shopsBox = await Hive.openBox<Shop>(ShopRepositoryKeys.shopsKey);
 
-    return shopsBox.values;
+    if (productFilter == null) return shopsBox.values.toList();
+
+    final shopListFiltered = shopsBox.values.where((shop) {
+      if (shop.productList.isEmpty) return false;
+
+      final productsFilteredDataList = shop.productList.where((products) {
+        if (products == null) return false;
+
+        return products.productName.contains(productFilter);
+      }).toList();
+
+      return productsFilteredDataList.isEmpty;
+    }).toList();
+
+    debugPrint('--> filtered Shop List: $shopListFiltered');
+
+    return shopListFiltered;
   }
-}
-
-/// Interface for [ShopRepository].
-abstract class IShopRepository {
-  /// Init data.
-  Future<void> initData();
-
-  /// Fetch shops.
-  Future<Iterable<Shop>> fetchShops();
 }

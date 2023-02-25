@@ -1,5 +1,6 @@
 import 'package:magnit_shop/features/navigation/service/coordinator.dart';
 import 'package:magnit_shop/features/shop_screen/service/bloc/shop_bloc.dart';
+import 'package:magnit_shop/features/shop_screen/service/repository/i_shop_repository.dart';
 import 'package:magnit_shop/features/shop_screen/service/repository/shop_repository.dart';
 
 /// Scope of dependencies which need through all app's life.

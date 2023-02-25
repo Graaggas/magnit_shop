@@ -28,7 +28,7 @@ class ShopScreen extends ElementaryWidget<ShopScreenWM> {
               onPressed: () {},
               child: IconButton(
                   splashRadius: 32,
-                  onPressed: () {},
+                  onPressed: wm.onFilterTap,
                   icon: const Icon(
                     Icons.filter_alt,
                     color: Colors.black45,
@@ -53,7 +53,7 @@ class ShopScreen extends ElementaryWidget<ShopScreenWM> {
       ),
       body: EntityStateNotifierBuilder<List<Shop>>(
         listenableEntityState: wm.shopEntityState,
-        loadingBuilder: (_, __) => const CircularProgressIndicator(),
+        loadingBuilder: (_, __) => const Center(child: CircularProgressIndicator()),
         errorBuilder: (_, __, ___) => const Center(
           child: Text(ShopScreenString.errorLoadingTitle),
         ),

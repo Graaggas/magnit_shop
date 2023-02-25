@@ -26,22 +26,18 @@ ShopScreenWM createShopScreenWM(BuildContext context) {
 }
 
 /// Widget model for [ShopScreen].
-class ShopScreenWM extends WidgetModel<ShopScreen, ShopScreenModel>
-    implements IShopScreenWM {
+class ShopScreenWM extends WidgetModel<ShopScreen, ShopScreenModel> implements IShopScreenWM {
   final Coordinator _coordinator;
   final _shopEntityState = EntityStateNotifier<List<Shop>>();
   late final StreamSubscription<BaseShopState> _stateStatusSubscription;
 
-  final TextEditingController _productFilteringController =
-      TextEditingController();
+  final TextEditingController _productFilteringController = TextEditingController();
 
   @override
-  ListenableState<EntityState<List<Shop>>> get shopEntityState =>
-      _shopEntityState;
+  ListenableState<EntityState<List<Shop>>> get shopEntityState => _shopEntityState;
 
   @override
-  TextEditingController get productFilteringController =>
-      _productFilteringController;
+  TextEditingController get productFilteringController => _productFilteringController;
 
   ShopScreenWM({
     required ShopScreenModel model,
@@ -67,6 +63,11 @@ class ShopScreenWM extends WidgetModel<ShopScreen, ShopScreenModel>
   }
 
   @override
+  void onFilterTap() {
+    model.filterByProduct(_productFilteringController.text);
+  }
+
+  @override
   void onShopCardTap(Shop shop) => _coordinator.navigate(
         context,
         AppCoordinates.aboutShopScreen,
@@ -75,6 +76,8 @@ class ShopScreenWM extends WidgetModel<ShopScreen, ShopScreenModel>
 
   void _updateState(BaseShopState state) {
     if (state is InitShopState) {
+      _shopEntityState.loading();
+    } else if (state is LoadingShopState) {
       _shopEntityState.loading();
     } else if (state is ShopState) {
       final shops = state.shopList;
@@ -95,4 +98,7 @@ abstract class IShopScreenWM {
 
   /// On shop card tap.
   void onShopCardTap(Shop shop);
+
+  /// On filter icon button tap.
+  void onFilterTap();
 }

@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:magnit_shop/features/shop_screen/domain/entity/product/product.dart';
 
 /// Basic shop event.
 abstract class BaseShopEvent extends Equatable {
@@ -10,31 +9,23 @@ abstract class BaseShopEvent extends Equatable {
   const BaseShopEvent();
 }
 
-/// Base class for updating shops.
+/// Base class for updating list of shops.
 abstract class ShopUpdateEvent extends BaseShopEvent {
-  /// Shop id.
-  final int id;
-
-  /// Shop name;
-  final String name;
-
-  /// List of products.
-  final List<Product> productList;
+  /// Product filter.
+  final String? productFilter;
 
   @override
   List<Object?> get props => [
-        id,
-        name,
-        productList,
+        productFilter,
       ];
 
   /// Constructor of [ShopUpdateEvent].
   const ShopUpdateEvent({
-    required this.id,
-    required this.name,
-    required this.productList,
+    required this.productFilter,
   });
 }
 
 /// Shop load event.
-class ShopLoadEvent extends BaseShopEvent {}
+class ShopLoadEvent extends ShopUpdateEvent {
+  const ShopLoadEvent({String? productFilter}) : super(productFilter: productFilter);
+}

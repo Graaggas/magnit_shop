@@ -2,7 +2,7 @@ import 'package:elementary/elementary.dart';
 import 'package:magnit_shop/features/shop_screen/service/bloc/shop_bloc.dart';
 import 'package:magnit_shop/features/shop_screen/service/bloc/shop_event.dart';
 import 'package:magnit_shop/features/shop_screen/service/bloc/shop_state.dart';
-import 'package:magnit_shop/features/shop_screen/service/repository/shop_repository.dart';
+import 'package:magnit_shop/features/shop_screen/service/repository/i_shop_repository.dart';
 
 /// Model for [ShopScreen].
 class ShopScreenModel extends ElementaryModel {
@@ -27,6 +27,9 @@ class ShopScreenModel extends ElementaryModel {
     super.init();
     await _shopRepository.initData();
 
-    _shopBloc.add(ShopLoadEvent());
+    _shopBloc.add(const ShopLoadEvent());
   }
+
+  void filterByProduct(String? productFilter) =>
+      _shopBloc.add(ShopLoadEvent(productFilter: productFilter));
 }

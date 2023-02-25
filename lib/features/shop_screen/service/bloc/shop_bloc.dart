@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:magnit_shop/features/shop_screen/service/bloc/shop_event.dart';
 import 'package:magnit_shop/features/shop_screen/service/bloc/shop_state.dart';
-import 'package:magnit_shop/features/shop_screen/service/repository/shop_repository.dart';
+import 'package:magnit_shop/features/shop_screen/service/repository/i_shop_repository.dart';
 
 /// Bloc for shops.
 class ShopBloc extends Bloc<BaseShopEvent, BaseShopState> {
@@ -17,8 +17,10 @@ class ShopBloc extends Bloc<BaseShopEvent, BaseShopState> {
   ) async {
     emit(LoadingShopState());
     try {
-      final shopList = await _shopRepository.fetchShops();
-      emit(ShopState(shopList.toList()));
+      final productFilter = event.productFilter;
+      final shopList = await _shopRepository.fetchShops(productFilter);
+
+      emit(ShopState(shopList));
     } on Exception catch (_) {
       emit(LoadingErrorState());
     }
