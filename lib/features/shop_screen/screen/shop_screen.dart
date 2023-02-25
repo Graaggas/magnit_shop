@@ -66,11 +66,13 @@ class ShopScreen extends ElementaryWidget<ShopScreenWM> {
 
           return Column(
             children: [
-              const SizedBox(height: 16),
-              Expanded(
-                child: ShopCard(
-                  shops: shops,
-                  onShopTap: wm.onShopCardTap,
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ShopCard(
+                    shops: shops,
+                    onShopTap: wm.onShopCardTap,
+                  ),
                 ),
               ),
             ],

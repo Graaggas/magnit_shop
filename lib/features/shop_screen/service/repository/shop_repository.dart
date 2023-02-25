@@ -16,8 +16,10 @@ class ShopRepository implements IShopRepository {
 
       await parametersBox.add(Parameter(id: 0, name: 'weight'));
       await parametersBox.add(Parameter(id: 1, name: 'height'));
-      await parametersBox.add(Parameter(id: 2, name: 'width'));
+      await parametersBox.add(Parameter(id: 2, name: 'anything'));
       await parametersBox.add(Parameter(id: 3, name: 'length'));
+      await parametersBox.add(Parameter(id: 4, name: 'nothing'));
+      await parametersBox.add(Parameter(id: 5, name: 'latitude'));
 
       // Fill Products
       final productsBox = await Hive.openBox<Product>(ShopRepositoryKeys.productsKey);
@@ -33,8 +35,13 @@ class ShopRepository implements IShopRepository {
       ]));
 
       await productsBox.add(Product(id: 2, productName: 'Plate', parameterList: [
+        parametersBox.get(4),
+        parametersBox.get(5),
+      ]));
+
+      await productsBox.add(Product(id: 3, productName: 'Spoon', parameterList: [
+        parametersBox.get(4),
         parametersBox.get(0),
-        parametersBox.get(3),
       ]));
 
       // Fill Shops
@@ -47,10 +54,16 @@ class ShopRepository implements IShopRepository {
         Shop(id: 1, shopName: 'HANDY STUFF', productList: [
           productsBox.get(1),
           productsBox.get(0),
+          productsBox.get(3),
         ]),
         Shop(id: 2, shopName: 'NOTHING TO GIVE, SO SORRY', productList: [
           productsBox.get(0),
           productsBox.get(2),
+        ]),
+        Shop(id: 3, shopName: 'NEED THINGS', productList: [
+          productsBox.get(1),
+          productsBox.get(5),
+          productsBox.get(3),
         ]),
       ]);
 
@@ -74,11 +87,11 @@ class ShopRepository implements IShopRepository {
       final productsList = shop.productList;
 
       for (var product in productsList) {
-        final productName = product?.productName.toLowerCase();
+        final productName = product?.productName.toLowerCase().trim();
 
         if (productName == null) continue;
 
-        if (productName.contains(productFilter.toLowerCase())) {
+        if (productName.contains(productFilter.toLowerCase().trim())) {
           return true;
         }
 
