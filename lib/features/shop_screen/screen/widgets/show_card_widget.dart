@@ -35,12 +35,9 @@ class ShopCard extends StatelessWidget {
                       child: ListView.builder(
                         shrinkWrap: true,
                         itemCount: shops[index].productList.length,
-                        itemBuilder: (_, indexProduct) {
-                          debugPrint('--> product: ${shops[index].productList[indexProduct]}');
-                          return Text(
-                            shops[index].productList[indexProduct]?.productName ?? '',
-                          );
-                        },
+                        itemBuilder: (_, indexProduct) => Text(
+                          shops[index].productList[indexProduct]?.productName ?? '',
+                        ),
                       ),
                     ),
                   ],

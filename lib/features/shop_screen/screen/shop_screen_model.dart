@@ -30,6 +30,6 @@ class ShopScreenModel extends ElementaryModel {
     _shopBloc.add(const ShopLoadEvent());
   }
 
-  void filterByProduct(String? productFilter) =>
+  void filterByProduct({String? productFilter}) =>
       _shopBloc.add(ShopLoadEvent(productFilter: productFilter));
 }

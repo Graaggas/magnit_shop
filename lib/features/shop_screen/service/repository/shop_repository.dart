@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:magnit_shop/features/shop_screen/domain/entity/parameter/parameter.dart';
 import 'package:magnit_shop/features/shop_screen/domain/entity/product/product.dart';
@@ -65,21 +64,29 @@ class ShopRepository implements IShopRepository {
   Future<List<Shop>> fetchShops(String? productFilter) async {
     final shopsBox = await Hive.openBox<Shop>(ShopRepositoryKeys.shopsKey);
 
-    if (productFilter == null) return shopsBox.values.toList();
+    if (productFilter == null || productFilter.isEmpty) {
+      return shopsBox.values.toList();
+    }
 
     final shopListFiltered = shopsBox.values.where((shop) {
       if (shop.productList.isEmpty) return false;
 
-      final productsFilteredDataList = shop.productList.where((products) {
-        if (products == null) return false;
+      final productsList = shop.productList;
 
-        return products.productName.contains(productFilter);
-      }).toList();
+      for (var product in productsList) {
+        final productName = product?.productName.toLowerCase();
 
-      return productsFilteredDataList.isEmpty;
+        if (productName == null) continue;
+
+        if (productName.contains(productFilter.toLowerCase())) {
+          return true;
+        }
+
+        continue;
+      }
+
+      return false;
     }).toList();
-
-    debugPrint('--> filtered Shop List: $shopListFiltered');
 
     return shopListFiltered;
   }

@@ -64,7 +64,11 @@ class ShopScreenWM extends WidgetModel<ShopScreen, ShopScreenModel> implements I
 
   @override
   void onFilterTap() {
-    model.filterByProduct(_productFilteringController.text);
+    final filterText = _productFilteringController.text;
+
+    if (_productFilteringController.text.isEmpty) model.filterByProduct();
+
+    model.filterByProduct(productFilter: filterText);
   }
 
   @override
