@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:magnit_shop/features/shop_screen/domain/entity/shop/shop.dart';
 import 'package:magnit_shop/features/shop_screen/screen/shop_screen_wm.dart';
 import 'package:magnit_shop/features/shop_screen/screen/widgets/filter_textfield_widget.dart';
-import 'package:magnit_shop/features/shop_screen/screen/widgets/show_card_widget.dart';
+import 'package:magnit_shop/features/shop_screen/screen/widgets/shop_list_widget.dart';
 import 'package:magnit_shop/features/shop_screen/shop_screen_string.dart';
 
 // Toolbar height = 40 (height of one textfield) * 2 + 8 (sizedBox) * 3 = 104
@@ -70,7 +70,7 @@ class ShopScreen extends ElementaryWidget<ShopScreenWM> {
               Flexible(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: ShopCard(
+                  child: ShopListWidget(
                     shops: shops,
                     onShopTap: wm.onShopCardTap,
                     onProductTap: wm.onProductTap,
