@@ -18,7 +18,8 @@ class ShopBloc extends Bloc<BaseShopEvent, BaseShopState> {
     emit(LoadingShopState());
     try {
       final productFilter = event.productFilter;
-      final shopList = await _shopRepository.fetchShops(productFilter);
+      final parameterFilter = event.parameterFilter;
+      final shopList = await _shopRepository.fetchShops(productFilter, parameterFilter);
 
       emit(ShopState(shopList));
     } on Exception catch (_) {

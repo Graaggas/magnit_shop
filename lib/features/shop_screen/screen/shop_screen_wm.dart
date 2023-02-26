@@ -30,7 +30,9 @@ ShopScreenWM createShopScreenWM(BuildContext context) {
 /// Widget model for [ShopScreen].
 class ShopScreenWM extends WidgetModel<ShopScreen, ShopScreenModel> implements IShopScreenWM {
   final Coordinator _coordinator;
+
   final _shopEntityState = EntityStateNotifier<List<Shop>>();
+
   late final StreamSubscription<BaseShopState> _stateStatusSubscription;
 
   final _isFilterUsed = ValueNotifier(false);
@@ -39,8 +41,15 @@ class ShopScreenWM extends WidgetModel<ShopScreen, ShopScreenModel> implements I
 
   final _productFilterFocusNode = FocusNode();
 
+  final _parameterFilteringController = TextEditingController();
+
+  final _parameterFilterFocusNode = FocusNode();
+
   @override
   FocusNode get productFilterFocusNode => _productFilterFocusNode;
+
+  @override
+  FocusNode get parameterFilterFocusNode => _parameterFilterFocusNode;
 
   @override
   ListenableState<EntityState<List<Shop>>> get shopEntityState => _shopEntityState;
@@ -50,6 +59,9 @@ class ShopScreenWM extends WidgetModel<ShopScreen, ShopScreenModel> implements I
 
   @override
   TextEditingController get productFilteringController => _productFilteringController;
+
+  @override
+  TextEditingController get parameterFilteringController => _parameterFilteringController;
 
   ShopScreenWM({
     required ShopScreenModel model,
@@ -71,26 +83,34 @@ class ShopScreenWM extends WidgetModel<ShopScreen, ShopScreenModel> implements I
     _stateStatusSubscription.cancel();
     _productFilteringController.dispose();
     _productFilterFocusNode.dispose();
+    _parameterFilterFocusNode.dispose();
+    _parameterFilteringController.dispose();
 
     super.dispose();
   }
 
   @override
   void onFilterTap() {
-    final filterText = _productFilteringController.text;
+    final productFilterText = _productFilteringController.text;
+    final parameterFilterText = _parameterFilteringController.text;
 
-    if (_productFilteringController.text.isEmpty) {
+    if (productFilterText.isEmpty && parameterFilterText.isEmpty) {
       _isFilterUsed.value = false;
       model.filterByProduct();
       _productFilterFocusNode.unfocus();
+      _parameterFilterFocusNode.unfocus();
 
       return;
     }
 
-    model.filterByProduct(productFilter: filterText);
+    model.filterByProduct(
+      productFilter: productFilterText,
+      parameterFilter: parameterFilterText,
+    );
     _isFilterUsed.value = true;
 
     _productFilterFocusNode.unfocus();
+    _parameterFilterFocusNode.unfocus();
   }
 
   @override
@@ -133,8 +153,14 @@ abstract class IShopScreenWM {
   /// Filter by product controller.
   TextEditingController get productFilteringController;
 
+  /// Filter by parameter controller.
+  TextEditingController get parameterFilteringController;
+
   /// Filter by product focus node.
   FocusNode get productFilterFocusNode;
+
+  /// Filter by parameter focus node.
+  FocusNode get parameterFilterFocusNode;
 
   /// Filter using state.
   ValueListenable<bool> get isFilterUsedState;

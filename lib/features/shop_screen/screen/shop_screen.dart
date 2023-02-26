@@ -47,7 +47,11 @@ class ShopScreen extends ElementaryWidget<ShopScreenWM> {
               focusNode: wm.productFilterFocusNode,
             ),
             const SizedBox(height: 8),
-            const FilterTextField(hintText: ShopScreenString.filterByParameter),
+            FilterTextField(
+              hintText: ShopScreenString.filterByParameter,
+              controller: wm.parameterFilteringController,
+              focusNode: wm.parameterFilterFocusNode,
+            ),
             const SizedBox(height: 8),
           ],
         ),

@@ -25,11 +25,11 @@ class ShopScreenModel extends ElementaryModel {
   @override
   Future<void> init() async {
     super.init();
-    await _shopRepository.initData();
+    await _shopRepository.initTestData();
 
     _shopBloc.add(const ShopLoadEvent());
   }
 
-  void filterByProduct({String? productFilter}) =>
-      _shopBloc.add(ShopLoadEvent(productFilter: productFilter));
+  void filterByProduct({String? productFilter, String? parameterFilter}) =>
+      _shopBloc.add(ShopLoadEvent(productFilter: productFilter, parameterFilter: parameterFilter));
 }

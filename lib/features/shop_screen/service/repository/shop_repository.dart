@@ -8,7 +8,7 @@ import 'package:magnit_shop/features/shop_screen/service/repository/shop_reposit
 /// Shop repository.
 class ShopRepository implements IShopRepository {
   @override
-  Future<void> initData() async {
+  Future<void> initTestData() async {
     final isShopBoxExist = await Hive.boxExists(ShopRepositoryKeys.shopsKey);
     if (!isShopBoxExist) {
       // Fill Parameters
@@ -92,10 +92,14 @@ class ShopRepository implements IShopRepository {
   }
 
   @override
-  Future<List<Shop>> fetchShops(String? productFilter) async {
+  Future<List<Shop>> fetchShops(String? productFilter, String? parameterFilter) async {
     final shopsBox = await Hive.openBox<Shop>(ShopRepositoryKeys.shopsKey);
 
     if (productFilter == null || productFilter.isEmpty) {
+      return shopsBox.values.toList();
+    }
+
+    if (parameterFilter == null || parameterFilter.isEmpty) {
       return shopsBox.values.toList();
     }
 
@@ -110,7 +114,20 @@ class ShopRepository implements IShopRepository {
         if (productName == null) continue;
 
         if (productName.contains(productFilter.toLowerCase().trim())) {
-          return true;
+          // return true;
+          final parameterList = product?.parameterList;
+          if (parameterList == null || parameterList.isEmpty) return false;
+          for (var parameter in parameterList) {
+            final parameterName = parameter?.name.toLowerCase().trim();
+
+            if (parameterName == null) continue;
+
+            if (parameterName.contains(parameterFilter.toLowerCase().trim())) {
+              return true;
+            }
+
+            continue;
+          }
         }
 
         continue;
